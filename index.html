@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Konkan Visitor - Explore, Book, and Experience</title>
+    <meta name="description" content="Your ultimate destination for Konkan travel - explore top spots, book stays, plan trips, and experience the best of Konkan.">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;400&family=Roboto:ital,wght@0,400;1,300&display=swap" rel="stylesheet">
+    <link rel="icon" href="https://img.icons8.com/color/48/000000/beach.png">
+    <style>
+        :root {
+            --primary: #11998e;
+            --secondary: #38ef7d;
+            --accent: #ef6e4b;
+            --bg: #f4fdfb;
+            --dark: #17323b;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            margin: 0;
+            font-family: 'Montserrat', 'Roboto', Arial, sans-serif;
+            background: var(--bg);
+            color: var(--dark);
+        }
+        header {
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            color: #fff;
+            text-align: center;
+            padding: 32px 0 15px 0;
+            box-shadow: 0 2px 18px rgba(0,0,0,0.09);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        header img.logo {
+            width: 54px;
+            vertical-align: middle;
+            margin-right: 16px;
+        }
+        header h1 {
+            display: inline-block;
+            font-size: 2.5rem;
+            margin: 0;
+            vertical-align: middle;
+            letter-spacing: 1.5px;
+        }
+        nav {
+            margin-top: 20px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 22px;
+            font-weight: bold;
+            font-size: 1.1em;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+            padding-bottom: 3px;
+        }
+        nav a:hover, nav a.active {
+            color: var(--accent);
+            border-bottom: 2px solid var(--accent);
+        }
+        .hero {
+            max-width: 1200px;
+            margin: 38px auto 0 auto;
+            background: #fff;
+            border-radius: 22px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+            padding: 40px 48px 36px 48px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            position: relative;
+        }
+        .hero-image {
+            flex: 1 1 320px;
+            text-align: center;
+        }
+        .hero-image img {
+            width: 100%;
+            max-width: 430px;
+            border-radius: 18px;
+            box-shadow: 0 6px 20px rgba(17,153,142,0.13);
+            object-fit: cover;
+        }
+        .hero-content {
+            flex: 2 1 380px;
+            padding-left: 48px;
+        }
+        .hero-content h2 {
+            color: var(--primary);
+            margin: 0 0 15px 0;
+            font-size: 2.1rem;
+        }
+        .hero-content p {
+            font-size: 1.22rem;
+            color: #444;
+            margin-bottom: 28px;
+        }
+        .cta-btn {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 15px 44px;
+            font-size: 1.18rem;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            color: #fff;
+            border: none;
+            border-radius: 24px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 2px 9px rgba(239,110,75,0.10);
+            transition: background 0.2s, transform 0.2s;
+            cursor: pointer;
+        }
+        .cta-btn:hover {
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: translateY(-2px) scale(1.04);
+        }
+        .floating-chat {
+            position: fixed;
+            bottom: 32px;
+            right: 32px;
+            z-index: 9999;
+        }
+        .chat-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 64px;
+            height: 64px;
+            font-size: 2rem;
+            box-shadow: 0 3px 12px rgba(17,153,142,0.18);
+            cursor: pointer;
+            transition: background 0.18s;
+        }
+        .chat-btn:hover {
+            background: var(--accent);
+        }
+        .chat-popup {
+            display: none;
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 320px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 3px 16px rgba(17,153,142,0.18);
+            padding: 20px;
+        }
+        .chat-popup.open {
+            display: block;
+        }
+        .chat-popup h4 {
+            margin: 0 0 10px 0;
+            color: var(--primary);
+            font-size: 1.12rem;
+        }
+        .chat-popup input, .chat-popup textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 7px;
+            border: 1px solid #ddd;
+            font-family: inherit;
+        }
+        .chat-popup button {
+            background: var(--secondary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            padding: 9px 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .chat-popup button:hover {
+            background: var(--primary);
+        }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 18px;
+        }
+        section {
+            background: #fff;
+            margin: 38px 0 0 0;
+            padding: 36px 42px 32px 42px;
+            border-radius: 17px;
+            box-shadow: 0 5px 24px rgba(17,153,142,0.07);
+        }
+        section h3 {
+            color: var(--accent);
+            margin-top: 0;
+            font-size: 1.5rem;
+            margin-bottom: 16px;
+        }
+        section ul, section ol {
+            margin: 10px 0 0 0;
+            padding-left: 28px;
+        }
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+            margin: 24px 0 0 0;
+            justify-content: center;
+        }
+        .gallery img {
+            width: 200px;
+            height: 125px;
+            object-fit: cover;
+            border-radius: 12px;
+            box-shadow: 0 2px 9px rgba(56,239,125,0.10);
+            transition: transform 0.15s;
+        }
+        .gallery img:hover {
+            transform: scale(1.08);
+        }
+        .booking-form {
+            max-width: 510px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+        .booking-form input, .booking-form select {
+            padding: 10px 12px;
+            border-radius: 7px;
+            border: 1px solid #ccc;
+            font-size: 1rem;
+            font-family: 'Roboto', Arial, sans-serif;
+        }
+        .booking-form button {
+            background: var(--accent);
+            color: #fff;
+            font-weight: bold;
+            font-size: 1.08rem;
+            border: none;
+            padding: 12px 0;
+            border-radius: 7px;
+            cursor: pointer;
+        }
+        .booking-form button:hover {
+            background: var(--primary);
+        }
+        .map-container {
+            width: 100%;
+            margin-top: 16px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 9px rgba(56,239,125,0.09);
+        }
+        .testimonials {
+            margin-top: 22px;
+        }
+        .testimonial {
+            background: #f0fff6;
+            border-left: 5px solid var(--primary);
+            border-radius: 12px;
+            margin-bottom: 18px;
+            padding: 15px 20px 10px 20px;
+            font-style: italic;
+            color: #234;
+        }
+        .testimonial .author {
+            display: block;
+            margin-top: 7px;
+            font-weight: bold;
+            color: var(--accent);
+            font-style: normal;
+        }
+        .newsletter {
+            background: var(--secondary);
+            color: #fff;
+            padding: 26px 22px;
+            border-radius: 14px;
+            box-shadow: 0 2px 9px rgba(56,239,125,0.10);
+            text-align: center;
+            margin: 40px 0 0 0;
+        }
+        .newsletter input[type="email"] {
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: none;
+            font-size: 1rem;
+            margin-right: 12px;
+            margin-top: 10px;
+        }
+        .newsletter button {
+            padding: 10px 24px;
+            border-radius: 8px;
+            border: none;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        .newsletter button:hover {
+            background: var(--accent);
+        }
+        footer {
+            text-align: center;
+            padding: 28px 0 24px 0;
+            font-size: 1rem;
+            color: #555;
+            background: transparent;
+        }
+        .footer-credit {
+            color: var(--primary);
+        }
+        @media (max-width: 1300px) {
+            .hero, main {
+                max-width: 98vw;
+            }
+        }
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                padding: 20px 2vw;
+            }
+            .hero-content {
+                padding-left: 0;
+                margin-bottom: 24px;
+            }
+            section {
+                padding: 18px 2vw;
+            }
+        }
+        @media (max-width: 700px) {
+            header h1 {
+                font-size: 1.25rem;
+            }
+            .hero-content h2 {
+                font-size: 1.1rem;
+            }
+            .gallery img {
+                width: 120px;
+                height: 70px;
+            }
+        }
+        @media (max-width: 440px) {
+            .gallery img {
+                width: 80px;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://img.icons8.com/color/96/000000/beach.png" alt="Konkan Visitor Logo" class="logo">
+        <h1>Konkan Visitor</h1>
+        <nav>
+            <a href="#about" class="active">About</a>
+            <a href="#places">Places</a>
+            <a href="#gallery">Gallery</a>
+            <a href="#map">Map</a>
+            <a href="#cuisine">Cuisine</a>
+            <a href="#book">Book Stay</a>
+            <a href="#testimonials">Reviews</a>
+            <a href="#newsletter">Newsletter</a>
+        </nav>
+    </header>
+    <div class="hero">
+        <div class="hero-image">
+            <!-- Main Konkan Image -->
+            <img src="konkan.jpg" alt="Konkan Beach and Ganpatipule Temple">
+        </div>
+        <div class="hero-content">
+            <h2>Discover, Book, and Experience the Beauty of Konkan!</h2>
+            <p>
+                Welcome to Konkan Visitor, your advanced travel companion for the Konkan coast! Explore top destinations, enjoy authentic cuisine, book your stay, get trip recommendations, and connect with other travelers. Make your Konkan journey memorable and hassle-free!
+            </p>
+            <a class="cta-btn" href="#book">Book Your Stay</a>
+        </div>
+    </div>
+    <main>
+        <section id="about">
+            <h3>About Konkan</h3>
+            <p>
+                Konkan is a stunning coastal belt of Western India, stretching from Maharashtra to Goa and Karnataka. With pristine beaches, lush green hills, ancient forts, vibrant villages, and world-famous food, Konkan is a paradise for explorers, families, and foodies alike.<br>
+                <b>Best Time to Visit:</b> October to March for beaches, July-September for monsoon magic.
+            </p>
+        </section>
+        <section id="places">
+            <h3>Must-Visit Destinations</h3>
+            <ul>
+                <li><b>Ganpatipule:</b> Iconic beach temple and tranquil sands.</li>
+                <li><b>Alibaug:</b> Beaches, forts, and water sports near Mumbai.</li>
+                <li><b>Ratnagiri:</b> Home of Alphonso mangoes and historic sites.</li>
+                <li><b>Malvan:</b> Sindhudurg Fort, snorkeling, and seafood.</li>
+                <li><b>Dapoli:</b> Hill station by the sea, dolphin watching.</li>
+                <li><b>Murud-Janjira:</b> Legendary sea fort and scenic beaches.</li>
+                <li><b>Goa:</b> Sun, sand, nightlife, and Indo-Portuguese culture.</li>
+            </ul>
+        </section>
+        <section id="gallery">
+            <h3>Photo Gallery</h3>
+            <div class="gallery">
+                <img src="konkan.jpg" alt="Ganpatipule Temple Beach">
+                <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="Konkan Beach">
+                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80" alt="Konkan Coastline">
+                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80" alt="Konkan Village">
+                <img src="https://images.unsplash.com/photo-1502086223501-7ea6ecd79368?auto=format&fit=crop&w=400&q=80" alt="Konkan Waterfall">
+            </div>
+        </section>
+        <section id="map">
+            <h3>Konkan Interactive Map</h3>
+            <div class="map-container" style="height:350px;">
+                <!-- Google Maps Embed Example: Ganpatipule -->
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3781.7583257406!2d73.26446481489277!3d16.67188188851701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bcf0c1f8e7b3aaf%3A0xcc8b746f2f2e65e3!2sGanpatipule%20Temple!5e0!3m2!1sen!2sin!4v1719756333642!5m2!1sen!2sin"
+                    width="100%" height="350" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </div>
+        </section>
+        <section id="cuisine">
+            <h3>Konkan Cuisine</h3>
+            <ul>
+                <li><b>Fish Thali:</b> Assorted seafood platter with rice and local flavors.</li>
+                <li><b>Kombdi Vade:</b> Spicy chicken curry with fried vade bread.</li>
+                <li><b>Sol Kadhi:</b> Refreshing kokum and coconut drink.</li>
+                <li><b>Alphonso Mangoes:</b> The king of fruits, best enjoyed in summer.</li>
+                <li><b>Modak:</b> Sweet dumpling, a signature festive treat.</li>
+            </ul>
+        </section>
+        <section id="book">
+            <h3>Book Your Stay</h3>
+            <form class="booking-form" id="bookingForm">
+                <input type="text" id="guestName" name="guestName" placeholder="Your Name" required>
+                <input type="email" id="guestEmail" name="guestEmail" placeholder="Your Email" required>
+                <select name="destination" id="destination" required>
+                    <option value="">Choose Destination</option>
+                    <option value="Ganpatipule">Ganpatipule</option>
+                    <option value="Alibaug">Alibaug</option>
+                    <option value="Ratnagiri">Ratnagiri</option>
+                    <option value="Malvan">Malvan</option>
+                    <option value="Dapoli">Dapoli</option>
+                    <option value="Murud-Janjira">Murud-Janjira</option>
+                    <option value="Goa">Goa</option>
+                </select>
+                <input type="date" id="checkin" name="checkin" required>
+                <input type="date" id="checkout" name="checkout" required>
+                <button type="submit">Book Now</button>
+            </form>
+            <div id="bookingResult" style="text-align:center; color:var(--primary); font-weight:bold; margin-top:10px;"></div>
+        </section>
+        <section id="testimonials">
+            <h3>Traveler Reviews</h3>
+            <div class="testimonials">
+                <div class="testimonial">
+                    "The Konkan Visitor site made my trip planning super easy. The booking feature is seamless and the suggestions were spot on. Highly recommend!"
+                    <span class="author">- Priya S.</span>
+                </div>
+                <div class="testimonial">
+                    "I loved the gallery and interactive map. The food recommendations are a must-try for everyone visiting Konkan!"
+                    <span class="author">- Rahul D.</span>
+                </div>
+                <div class="testimonial">
+                    "Well-designed, fast, and full of useful info. The chat support is a great touch!"
+                    <span class="author">- Jennifer L.</span>
+                </div>
+            </div>
+        </section>
+        <section class="newsletter" id="newsletter">
+            <h3>Subscribe for Konkan Travel Tips &amp; Offers</h3>
+            <form id="newsletterForm">
+                <input type="email" id="newsletterEmail" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <div id="newsletterResult" style="font-weight:bold; margin-top:8px;"></div>
+        </section>
+    </main>
+    <!-- Floating Chat Widget -->
+    <div class="floating-chat">
+        <button class="chat-btn" id="openChat" title="Ask us!">💬</button>
+        <div class="chat-popup" id="chatPopup">
+            <h4>Chat with Konkan Visitor</h4>
+            <input type="text" id="chatName" placeholder="Your Name">
+            <textarea id="chatMessage" rows="2" placeholder="Type your message..."></textarea>
+            <button id="sendChat">Send</button>
+        </div>
+    </div>
+    <footer>
+        <span class="footer-credit">Created by Sahil Narkar</span> | &copy; 2025 Konkan Visitor. All rights reserved.
+    </footer>
+    <script>
+        // Chat Widget Toggle
+        const chatBtn = document.getElementById('openChat');
+        const chatPopup = document.getElementById('chatPopup');
+        chatBtn.onclick = () => chatPopup.classList.toggle('open');
+
+        // Chat "Send" handler (demo)
+        document.getElementById('sendChat').onclick = function() {
+            const name = document.getElementById('chatName').value.trim();
+            const message = document.getElementById('chatMessage').value.trim();
+            if (!name || !message) {
+                alert('Please enter your name and a message.');
+                return;
+            }
+            alert('Thank you, ' + name + '! Our team will reply soon.');
+            document.getElementById('chatName').value = '';
+            document.getElementById('chatMessage').value = '';
+            chatPopup.classList.remove('open');
+        };
+
+        // Booking form handler (demo)
+        document.getElementById('bookingForm').onsubmit = function(e) {
+            e.preventDefault();
+            const name = document.getElementById('guestName').value.trim();
+            const email = document.getElementById('guestEmail').value.trim();
+            const dest = document.getElementById('destination').value;
+            const checkin = document.getElementById('checkin').value;
+            const checkout = document.getElementById('checkout').value;
+            if (!name || !email || !dest || !checkin || !checkout) {
+                document.getElementById('bookingResult').textContent = "Please fill in all fields.";
+                return;
+            }
+            if (new Date(checkout) <= new Date(checkin)) {
+                document.getElementById('bookingResult').textContent = "Checkout date must be after check-in.";
+                return;
+            }
+            document.getElementById('bookingResult').textContent = "Thank you! Your stay at " + dest + " is booked.";
+            setTimeout(() => (document.getElementById('bookingResult').textContent = ""), 7000);
+            document.getElementById('bookingForm').reset();
+        };
+
+        // Newsletter form handler (demo)
+        document.getElementById('newsletterForm').onsubmit = function(e) {
+            e.preventDefault();
+            const email = document.getElementById('newsletterEmail').value.trim();
+            if (!/^[^@]+@[^@]+\.[a-z]{2,}$/.test(email)) {
+                document.getElementById('newsletterResult').textContent = "Enter a valid email address.";
+                return;
+            }
+            document.getElementById('newsletterResult').textContent = "Subscribed! Thank you for joining.";
+            setTimeout(() => (document.getElementById('newsletterResult').textContent = ""), 7000);
+            document.getElementById('newsletterForm').reset();
+        };
+    </script>
+</body>
+</html>
